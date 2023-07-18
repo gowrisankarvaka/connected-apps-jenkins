@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="2ed40f5d-c4f8-436a-9d75-967a05332e03" >
+		<salesforce:basic-connection username="gowrisankar@apicentrics.com" password="Gowri123$" securityToken="SVsKA9btmiIMmF3JWAMkQmpx" />
+	</salesforce:sfdc-config>
+	<flow name="retrieve-Flow" doc:id="54b7620a-cd7b-4b18-9042-be52b856d83b" >
+		<salesforce:query doc:name="Query" doc:id="f3b3197d-6e90-42b1-9add-2e351da9c1a3" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT desg__c,eid__c,email__c,ename__c,phone__c FROM Employees__c]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="31686f07-1348-40bc-abcd-33964b660568" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="insert-Flow" doc:id="6192850d-49b1-46cd-89d3-82f0d5de58f6" >
+		<ee:transform doc:name="Transform Message" doc:id="11aa4c1b-71c3-4ab2-9951-3aadb6d27eae" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:create doc:name="Create" doc:id="de3a9232-2a7e-4ff9-954d-87ab216c317d" config-ref="Salesforce_Config" type="Employees__c"/>
+	</flow>
+</mule>

@@ -1,0 +1,11 @@
+%dw 2.0
+
+type auto_54b7620a_cd7b_4b18_9042_be52b856d83b_Output_Payload = {
+  fname: String, 
+  lname: String, 
+  city: String, 
+  street: String, 
+  cid: Number, 
+  _?: Any
+}
+

@@ -1,0 +1,46 @@
+#%RAML 1.0
+title: customer
+  
+types:
+  input_dt: !include Datatypes/dataType.raml
+
+traits:
+  error_resp: !include Traits/error_trait.raml
+  queryPars: !include Traits/queryTrait.raml
+
+uses:
+  libraries: Libraries/library.raml
+
+resourceTypes:
+  putResource: !include Resource-types/putResourceType.raml
+
+securitySchemes:
+  security: !include Security schemas/securityScheme.raml
+
+securedBy:
+  - security
+
+/customer:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: input_dt
+            example: !include exchange_modules/a62f6236-0b02-4e5f-a8eb-dc5e37aedb12/example/1.0.0/example.raml
+    is: [queryPars,error_resp]
+  post:
+    is: [libraries.errors]
+    body:
+      application/json:
+        type: libraries.datatype
+        example: !include exchange_modules/a62f6236-0b02-4e5f-a8eb-dc5e37aedb12/example/1.0.0/example.raml
+    responses:
+      201:
+        body:
+          application/json:
+            type: string
+            example: "inserted successfully!!!!!"
+  put:
+  type: putResource
+    

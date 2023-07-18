@@ -1,0 +1,14 @@
+#%RAML 1.0 ResourceType
+
+ put:
+    is: [queryPars,libraries.errors]
+    body:
+      application/json:
+        type: libraries.datatype
+        example: !include ../Examples/file.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: string
+            example: "Updated successfully!!!!!!!"

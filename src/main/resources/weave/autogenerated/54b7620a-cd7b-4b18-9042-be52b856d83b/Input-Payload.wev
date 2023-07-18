@@ -1,0 +1,10 @@
+%dw 2.0
+
+type auto_54b7620a_cd7b_4b18_9042_be52b856d83b_Input_Payload = {|
+  cid: Number, 
+  fname: String, 
+  lname: String, 
+  street: String, 
+  city: String
+|}
+
