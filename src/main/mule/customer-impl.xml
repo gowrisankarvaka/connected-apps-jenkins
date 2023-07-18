@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	</salesforce:sfdc-config>
 	<flow name="retrieve-Flow" doc:id="54b7620a-cd7b-4b18-9042-be52b856d83b" >
 		<salesforce:query doc:name="Query" doc:id="f3b3197d-6e90-42b1-9add-2e351da9c1a3" config-ref="Salesforce_Config">
-			<salesforce:salesforce-query ><![CDATA[SELECT desg__c,eid__c,email__c,ename__c,phone__c FROM Employees__c]]></salesforce:salesforce-query>
+			<salesforce:salesforce-query ><![CDATA[SELECT cid__c,city__c,fname__c,Id,lname__c,street__c FROM customer__c]]></salesforce:salesforce-query>
 		</salesforce:query>
 		<ee:transform doc:name="Transform Message" doc:id="31686f07-1348-40bc-abcd-33964b660568" >
 			<ee:message >
@@ -22,15 +22,22 @@ payload]]></ee:set-payload>
 		</ee:transform>
 	</flow>
 	<flow name="insert-Flow" doc:id="6192850d-49b1-46cd-89d3-82f0d5de58f6" >
+		<logger level="INFO" doc:name="Logger" doc:id="2f590e67-3459-4e9f-b76a-695dbb8b32a0" message="#[payload]"/>
 		<ee:transform doc:name="Transform Message" doc:id="11aa4c1b-71c3-4ab2-9951-3aadb6d27eae" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
 ---
-payload
+[{
+        "cid__c": payload.cid,
+        "city__c": payload.city,
+        "fname__c": payload.fname,
+        "street__c": payload.street,
+        "lname__c": payload.lname
+}]
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<salesforce:create doc:name="Create" doc:id="de3a9232-2a7e-4ff9-954d-87ab216c317d" config-ref="Salesforce_Config" type="Employees__c"/>
+		<salesforce:create doc:name="Create" doc:id="de3a9232-2a7e-4ff9-954d-87ab216c317d" config-ref="Salesforce_Config" type="customer__c"/>
 	</flow>
 </mule>

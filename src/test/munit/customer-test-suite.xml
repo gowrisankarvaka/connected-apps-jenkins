@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="customer-test-suite.xml" />
+	<munit:test name="customer-test-suite-get:\customer:sys_api-configTest" doc:id="80087602-6186-4864-b0bd-fd25d2fcb7e0" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy" doc:id="80069ab9-bd37-4728-9b5a-11d60d13afee" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5450e1fd-b0f8-4fc8-9ef8-c51315f58813" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:verify-call doc:name="Verify call" doc:id="d133e859-166c-4956-9594-4b7a95ce97f4" processor="flow-ref">
+						<munit-tools:with-attributes >
+							<munit-tools:with-attribute whereValue="5450e1fd-b0f8-4fc8-9ef8-c51315f58813" attributeName="doc:id" />
+						</munit-tools:with-attributes>
+					</munit-tools:verify-call>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:verify-call doc:name="Verify call" doc:id="bba92f7d-c5b5-4f31-b36a-70dcd5951a2d" processor="flow-ref">
+						<munit-tools:with-attributes >
+							<munit-tools:with-attribute whereValue="5450e1fd-b0f8-4fc8-9ef8-c51315f58813" attributeName="doc:id" />
+						</munit-tools:with-attributes>
+					</munit-tools:verify-call>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c8172515-566d-4725-8bdb-e02ac9d95856" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f3b3197d-6e90-42b1-9add-2e351da9c1a3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\customer:sys_api-config" doc:id="1c749814-a01c-48cf-bdc6-08e18bf696a5" name="get:\customer:sys_api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="4fb70728-abe9-4d8d-b4f4-b36ee4415eb3" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="31686f07-1348-40bc-abcd-33964b660568" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="customer-test-suite-post:\customer:application\json:sys_api-configTest" doc:id="fe6ea049-1e80-46ea-a16c-5a281c450509" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="fe110303-32ea-4911-8260-a0d1112c5610" >
+				<munit:payload value="#[output application/java&#10;---&#10;readUrl('classpath://sysapimaintest/set-event_payload.dwl',&quot;application/dw&quot; , {onlyData:true})]" />
+
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="edeacd09-7b2a-49d7-8fe2-c06778db8fe4" processor="salesforce:create">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="de3a9232-2a7e-4ff9-954d-87ab216c317d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:CONNECTVITY" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\customer:application\json:sys_api-config" doc:id="b0397c44-fcba-41ac-93c8-c1384d267f61" name="post:\customer:application\json:sys_api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="16bfb214-0d4a-4f91-bb57-afe83e3211d1" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		
+</munit:validation>
+	</munit:test>
+
+
+</mule>
